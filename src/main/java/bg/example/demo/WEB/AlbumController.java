@@ -55,10 +55,6 @@ public class AlbumController {
 
         albumService.createAlbum(albumServiceModel);
 
-        if (albumService.equals(null)) {
-
-        }
-
         return "redirect:/home";
     }
 
