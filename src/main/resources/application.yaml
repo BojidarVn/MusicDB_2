@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: kit123k@t123
+    url: jdbc:mysql://localhost:3306/music_db_workshop2?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
+    username: root
+  jpa:
+    #For MySQL 8
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    #For MySQL 5
+    #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+carousel:
+  images: 5803.jpg, aerosmith_2012.jpg, iron-maiden-rock-and-roll-hall-of-fame.jpg, madonna.jpg, metallica.jpg, queen.jpg
+  refresh-cron: "0 */1 * * * *"
+
+#server:
+#  port: 8011
+
