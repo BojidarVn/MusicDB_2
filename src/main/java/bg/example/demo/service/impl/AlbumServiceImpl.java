@@ -59,4 +59,12 @@ public class AlbumServiceImpl implements AlbumService {
                 }).orElseThrow(IllegalArgumentException::new);
 
     }
+
+    @Override
+    public AlbumEntity findEntityById(Long albumId) {
+
+
+        return albumRepository.findById(albumId)
+                .orElseThrow(IllegalArgumentException :: new);
+    }
 }
