@@ -1,9 +1,12 @@
 package bg.example.demo.model.binding;
 
 import bg.example.demo.model.entity.enums.Genre;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
-import java.time.Instant;
+
+import java.time.LocalDate;
 
 public class AlbumAddBindingModel {
     private Genre genre;
@@ -14,8 +17,11 @@ public class AlbumAddBindingModel {
     private String description;
     private Integer copies;
     private BigDecimal price;
-    private Instant releaseDate;
+    private LocalDate releaseDate;
+    private String artist;
 
+
+    @NotNull
     public Genre getGenre() {
         return genre;
     }
@@ -25,6 +31,8 @@ public class AlbumAddBindingModel {
         return this;
     }
 
+    @NotBlank
+    @Size(min = 5,max = 20)
     public String getName() {
         return name;
     }
@@ -34,6 +42,8 @@ public class AlbumAddBindingModel {
         return this;
     }
 
+
+    @Size(min = 5)
     public String getImageUrl() {
         return imageUrl;
     }
@@ -42,6 +52,8 @@ public class AlbumAddBindingModel {
         this.imageUrl = imageUrl;
         return this;
     }
+
+
 
     public String getVideoUrl() {
         return videoUrl;
@@ -52,6 +64,8 @@ public class AlbumAddBindingModel {
         return this;
     }
 
+
+    @Size(min = 5)
     public String getDescription() {
         return description;
     }
@@ -61,6 +75,7 @@ public class AlbumAddBindingModel {
         return this;
     }
 
+    @Min(0)
     public Integer getCopies() {
         return copies;
     }
@@ -70,6 +85,7 @@ public class AlbumAddBindingModel {
         return this;
     }
 
+    @DecimalMin("0")
     public BigDecimal getPrice() {
         return price;
     }
@@ -79,14 +95,26 @@ public class AlbumAddBindingModel {
         return this;
     }
 
-    public Instant getReleaseDate() {
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public AlbumAddBindingModel setReleaseDate(Instant releaseDate) {
+    public AlbumAddBindingModel setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
         return this;
     }
+
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public AlbumAddBindingModel setArtist(String artist) {
+        this.artist = artist;
+        return this;
+    }
+
 
     @Override
     public String toString() {
@@ -101,4 +129,6 @@ public class AlbumAddBindingModel {
                 ", releaseDate=" + releaseDate +
                 '}';
     }
+
+
 }

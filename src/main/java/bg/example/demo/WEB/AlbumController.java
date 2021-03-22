@@ -2,6 +2,7 @@ package bg.example.demo.WEB;
 
 import bg.example.demo.model.binding.AlbumAddBindingModel;
 import bg.example.demo.model.service.AlbumServiceModel;
+import bg.example.demo.model.view.AlbumViewModel;
 import bg.example.demo.service.AlbumService;
 import bg.example.demo.service.ArtistService;
 import org.modelmapper.ModelMapper;
@@ -9,10 +10,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+import java.time.ZoneId;
 
 @Controller
 @RequestMapping("/albums")
@@ -36,26 +39,56 @@ public class AlbumController {
     }
 
     @GetMapping("/add")
-    public Model addAlbum(Model model) {
+    public String addAlbum (Model model) {
 
         model.addAttribute("artists", artistService.findAllArtists());
+        return "add-album";
 
-        return model;
+
     }
 
     @PostMapping("/add")
-    public String addAlbum(AlbumAddBindingModel bindingModel,
+    public String addAlbum(@Valid AlbumAddBindingModel albumAddBindingModel, BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes,
                            @AuthenticationPrincipal UserDetails principal) {
-        //TODO: add validation and error handling.
+
+        if (bindingResult.hasErrors()) {
+
+            redirectAttributes.addFlashAttribute("albumAddBindingModel", albumAddBindingModel);
+            redirectAttributes
+                    .addFlashAttribute("org.springframework.validation.BindingResult.albumAddBindingResult", bindingResult);
+            return "redirect:add";
+        }
+
+
         AlbumServiceModel albumServiceModel = modelMapper.map(
-                bindingModel,
+                albumAddBindingModel,
                 AlbumServiceModel.class);
 
-        albumServiceModel.setUserName(principal.getUsername());
+        albumServiceModel.setUser(principal.getUsername());
+
+
+        albumServiceModel
+                .setReleaseDate(albumAddBindingModel.getReleaseDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         albumService.createAlbum(albumServiceModel);
 
+
         return "redirect:/home";
     }
+
+
+
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable Long id, Model model) {
+
+        AlbumViewModel albumViewModel=albumService.findById(id);
+
+        model.addAttribute("album",albumViewModel);
+
+        return "details";
+    }
+
+
 
 }

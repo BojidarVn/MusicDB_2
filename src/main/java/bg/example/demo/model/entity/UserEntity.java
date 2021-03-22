@@ -20,6 +20,8 @@ public class UserEntity extends BaseEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<UserRoleEntity> roles = new ArrayList<>();
 
+
+
     public String getUsername() {
         return username;
     }

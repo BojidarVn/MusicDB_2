@@ -39,12 +39,10 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public List<ArtistViewModel> findAllArtists() {
-        return artistRepository.
-                findAll().
-                stream().
-                map(a -> modelMapper.map(a, ArtistViewModel.class)).
-                collect(Collectors.toList());
+    public List<String> findAllArtists() {
+        return artistRepository.findALLArtistNames();
+
+
     }
 
     @Override
@@ -60,5 +58,13 @@ public class ArtistServiceImpl implements ArtistService {
                 throw new IllegalStateException("Cannot seed artists... :(");
             }
         }
+    }
+
+    @Override
+    public ArtistEntity findByName(String artist) {
+
+        return artistRepository.findByName(artist).orElseThrow(IllegalArgumentException :: new);
+
+
     }
 }

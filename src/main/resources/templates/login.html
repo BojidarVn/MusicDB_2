@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="fragments/commons :: head"> </head>
+>
+<head th:replace="fragments/commons :: head"></head>
 <body>
-<header th:replace="fragments/commons :: navigation"> </header>
+<header th:replace="fragments/commons :: navigation"></header>
 
 <main class="p-5 align-content-center bg-blur my-register-div">
     <h1 class="text-light    border-bottom mb-5">Login</h1>
@@ -17,8 +17,8 @@
                 This username and password combination does not exist.
             </div>
             <form
-               th:action="@{/users/login}"
-                method="POST">
+                    th:action="@{/users/login}"
+                    method="POST">
                 <!--User name-->
                 <div>
                     <div class="col-auto">
@@ -28,6 +28,7 @@
                         <input type="text"
                                name="username"
                                th:value="${username}"
+                               required minlength="5" maxlength="20"
                                id="inputUsername"
                                class="form-control"
                                aria-describedby="usernameHelpInline">
@@ -41,7 +42,11 @@
                         <label for="inputPassword" class="col-form-label text-light">Password</label>
                     </div>
                     <div class="col-auto">
-                        <input type="password" name="password" id="inputPassword" class="form-control"
+                        <input type="password"
+                               name="password"
+                               required minlength="5" maxlength="20"
+                               id="inputPassword"
+                               class="form-control"
                                aria-describedby="passwordHelpInline">
                     </div>
                 </div>
@@ -54,6 +59,6 @@
 
     </div>
 </main>
-<footer th:replace="fragments/commons :: footer"> </footer>
+<footer th:replace="fragments/commons :: footer"></footer>
 </body>
 </html>
