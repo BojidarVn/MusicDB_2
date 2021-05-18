@@ -12,4 +12,5 @@ public class MusicDb2Application {
         SpringApplication.run(MusicDb2Application.class, args);
     }
 
+
 }

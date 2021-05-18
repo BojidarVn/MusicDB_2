@@ -29,6 +29,6 @@ carousel:
   images: 5803.jpg, aerosmith_2012.jpg, iron-maiden-rock-and-roll-hall-of-fame.jpg, madonna.jpg, metallica.jpg, queen.jpg
   refresh-cron: "0 */1 * * * *"
 
-#server:
-#  port: 8011
+server:
+  port: 8011
 
