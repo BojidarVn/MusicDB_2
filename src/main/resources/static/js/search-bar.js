@@ -1,7 +1,10 @@
 const albumsList = document.getElementById('albumsList');
 const searchBar = document.getElementById('searchInput');
 const allAlbums = [];
-fetch("http://localhost:8080/albums/api")
+
+// DA SE WNIMAVA KOI PORT NA HOSTA SE IZPOLZVA!!!!!!!!!           ВНИМАНИЕ!!!!!
+
+fetch("http://localhost:8011/albums/api")
     .then(response => response.json())
     .then(data => {
         for (let album of data) {
@@ -15,7 +18,7 @@ searchBar.addEventListener('keyup', (e) => {
     const searchingCharacters = searchBar.value.toLowerCase();
     let filteredAlbums = allAlbums.filter(album => {
         return album.name.toLowerCase().includes(searchingCharacters)
-            || album.artistEntity.name.toLowerCase().includes(searchingCharacters);
+            || album.artist.toLowerCase().includes(searchingCharacters);
     });
     displayAlbums(filteredAlbums);
 })
@@ -32,7 +35,7 @@ const displayAlbums = (albums) => {
                 <div class="card-body">
                     <div class="text-center">
                         <p class="card-text border-bottom ">Name: ${a.name}</p>
-                        <p class="card-text border-bottom ">Artist: ${a.artistEntity.name}</p>
+                        <p class="card-text border-bottom ">Artist: ${a.artist}</p>
                         <p class="card-text border-bottom ">Genre: ${a.genre}</p>
                         <p class="card-text border-bottom ">Price: ${a.price}</p>
                         <p class="card-text border-bottom">Release Date: ${a.releaseDate}</p>

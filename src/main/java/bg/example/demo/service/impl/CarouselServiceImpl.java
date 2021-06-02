@@ -1,6 +1,7 @@
 package bg.example.demo.service.impl;
 
 import bg.example.demo.service.CarouselService;
+import bg.example.demo.service.ImageShuffler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,8 +20,10 @@ public class CarouselServiceImpl implements CarouselService {
     private Logger LOGGER = LoggerFactory.getLogger(CarouselServiceImpl.class);
 
     private List<String> images = new ArrayList<>();
+    private ImageShuffler imageShuffler;
 
-    public CarouselServiceImpl(@Value("${carousel.images}") List<String> images) {
+    public CarouselServiceImpl(@Value("${carousel.images}") List<String> images, ImageShuffler imageShuffler) {
+        this.imageShuffler = imageShuffler;
         this.images.addAll(images);
     }
 
@@ -43,12 +46,12 @@ public class CarouselServiceImpl implements CarouselService {
 
     @Override
     public String thirdImage() {
-        return images.get(3);
+        return images.get(2);
     }
 
     @Scheduled(cron = "${carousel.refresh-cron}")
     public void refresh() {
         LOGGER.info("Shuffling images...");
-        Collections.shuffle(images);
+        imageShuffler.shuffler(images);
     }
 }

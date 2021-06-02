@@ -1,5 +1,6 @@
 package bg.example.demo.service.impl;
 
+import bg.example.demo.exceptions.ObjectNotFoundException;
 import bg.example.demo.model.entity.AlbumEntity;
 import bg.example.demo.model.entity.ArtistEntity;
 import bg.example.demo.model.entity.UserEntity;
@@ -56,7 +57,7 @@ public class AlbumServiceImpl implements AlbumService {
                             .map(albumEntity,AlbumViewModel.class);
                     albumViewModel.setArtist(albumEntity.getArtistEntity().getName());
                     return albumViewModel;
-                }).orElseThrow(IllegalArgumentException::new);
+                }).orElseThrow(ObjectNotFoundException::new);
 
     }
 
@@ -65,6 +66,6 @@ public class AlbumServiceImpl implements AlbumService {
 
 
         return albumRepository.findById(albumId)
-                .orElseThrow(IllegalArgumentException :: new);
+                .orElseThrow(ObjectNotFoundException:: new);
     }
 }

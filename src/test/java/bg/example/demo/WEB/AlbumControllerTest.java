@@ -1,13 +1,12 @@
 package bg.example.demo.WEB;
 
 
-import bg.example.demo.model.entity.AlbumEntity;
-import bg.example.demo.model.entity.ArtistEntity;
-import bg.example.demo.model.entity.UserEntity;
 import bg.example.demo.model.entity.enums.Genre;
 import bg.example.demo.repository.AlbumRepository;
 import bg.example.demo.repository.ArtistRepository;
+import bg.example.demo.repository.LogRepository;
 import bg.example.demo.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,11 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -48,9 +43,23 @@ public class AlbumControllerTest {
     @Autowired
     private ArtistRepository artistRepository;
 
+    @Autowired
+    private LogRepository logRepository;
+
+    private AlbumTestDate testDate;
+
     @BeforeEach
     public void setup() {
-        this.init();
+
+        testDate=new AlbumTestDate(userRepository, albumRepository, artistRepository, logRepository);
+
+        testDate.init();
+        testAlbumId=testDate.getTestAlbumId();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        testDate.cleanUp();
     }
 
     @Test
@@ -83,41 +92,10 @@ public class AlbumControllerTest {
 
         Assertions.assertEquals(2,albumRepository.count());
 
-        //todo may verify the created album properties
-    }
-
-    private void init() {
-
-        ArtistEntity artistEntity = new ArtistEntity();
-        artistEntity.setName("METALLICA");
-        artistEntity.setCareerInformation("Some info about metallica");
-
-       artistEntity= artistRepository.save(artistEntity);
-
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername("pesho").setPassword("xyz").setFullname("petar petrov");
-        userEntity = userRepository.save(userEntity);
-
-        AlbumEntity albumEntity = new AlbumEntity();
-        albumEntity
-                .setName("JUSTIS FOR ALL")
-                .setImageUrl("https://cdn.pocket-lint.com/r/s/970x/assets/images/142413-apps-feature-art-and-science-collide-the-best-in-modern-space-art-image1-iha6vzu3wk-jpg.webp?v1")
-                .setVideoUrl("HbokBTEBEOE")
-                .setDescription("Some description")
-                .setCopies(11)
-                .setPrice(BigDecimal.TEN)
-                .setReleaseDate(LocalDate.of(1988, 3, 3).atStartOfDay(ZoneId.systemDefault()).toInstant())
-                .setGenre(Genre.METAL)
-                .setArtistEntity(artistEntity)
-                .setUserEntity(userEntity);
-
-        albumEntity=albumRepository.save(albumEntity);
-
-        testAlbumId=albumEntity.getId();
-
-
 
     }
+
+
 
 
 }
